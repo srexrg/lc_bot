@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import requests
 import openai
+import logging
 import random
 import os
 from dotenv import load_dotenv
@@ -9,6 +10,7 @@ from discord.ext.commands import cooldown, BucketType
 from collections import defaultdict
 from datetime import datetime, timedelta,timezone
 
+logging.basicConfig(level=logging.INFO)
 
 class RateLimiter:
     def __init__(self, max_requests, time_window):
@@ -55,9 +57,17 @@ permissions = discord.Permissions(
 
 @bot.event
 async def on_ready():
+    no_of_servers = len(bot.guilds)
+    print(f"Bot is on {no_of_servers} servers ")
+    server_names = [guild.name for guild in bot.guilds]
+    print("Connected to the following servers:")
+    for name in server_names:
+        print(f"- {name}")
+
     invite_link = discord.utils.oauth_url(bot.user.id, permissions=permissions)
-    print(f"{bot.user} has connected to Discord!")
-    print(f"Invite link: {invite_link}")
+    logging.info(f"{bot.user} has connected to Discord!")
+    
+    logging.info(f"Invite link: {invite_link}")
 
 
 @bot.command(
@@ -67,6 +77,7 @@ async def on_ready():
 )
 async def leetcode(ctx, difficulty: str = None):
     valid_difficulties = ["easy", "medium", "hard", "random"]
+    logging.info(f"User {ctx.author.id} used the leetcode command.")
 
     if not difficulty or difficulty.lower() not in valid_difficulties:
         await ctx.send(
@@ -81,6 +92,7 @@ async def leetcode(ctx, difficulty: str = None):
             "• Use `!lchint <problem-no>` to view user stats\n"
             "• Use `!lccontest` to see upcoming contests\n"
         )
+        logging.info(f"User {ctx.author.id} used the leetcode command.")
         return
 
     try:
