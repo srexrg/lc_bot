@@ -66,8 +66,17 @@ async def on_ready():
 
     invite_link = discord.utils.oauth_url(bot.user.id, permissions=permissions)
     logging.info(f"{bot.user} has connected to Discord!")
-    
+
     logging.info(f"Invite link: {invite_link}")
+
+
+@bot.event
+async def on_command(ctx):
+    user = ctx.author  # Get the user object
+    user_name = (
+        f"{user.name}#{user.discriminator}"  # Format the username and discriminator
+    )
+    logging.info(f"User {user.id} ({user_name}) used the command: {ctx.command}")
 
 
 @bot.command(
@@ -77,7 +86,6 @@ async def on_ready():
 )
 async def leetcode(ctx, difficulty: str = None):
     valid_difficulties = ["easy", "medium", "hard", "random"]
-    logging.info(f"User {ctx.author.id} used the leetcode command.")
 
     if not difficulty or difficulty.lower() not in valid_difficulties:
         await ctx.send(
@@ -92,7 +100,6 @@ async def leetcode(ctx, difficulty: str = None):
             "• Use `!lchint <problem-no>` to view user stats\n"
             "• Use `!lccontest` to see upcoming contests\n"
         )
-        logging.info(f"User {ctx.author.id} used the leetcode command.")
         return
 
     try:
@@ -169,6 +176,7 @@ def fetch_random_leetcode(difficulty=None):
 
     except requests.RequestException as e:
         return f"Error fetching problem: {e}"
+
 
 
 @bot.command(
