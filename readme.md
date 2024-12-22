@@ -2,6 +2,10 @@
 
 A Discord bot that provides various LeetCode functionalities, including fetching random problems, daily challenges, user statistics,AI Hints and more.
 
+## Bot Usage and Reach
+
+The bot is currently active and being utilized across more than 30 servers.
+
 ## Features
 
 - **Random LeetCode Problem**: Fetch a random LeetCode problem by difficulty.
