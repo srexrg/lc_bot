@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import requests
-import openai
+import groq
 import logging
 import random
 import os
@@ -227,11 +227,12 @@ async def get_hint(ctx, problem_number: str):
 
         prompt = f"You are a helpful programming tutor. Give a helpful hint for solving the LeetCode problem '{title}' (#{problem_number}). The hint should guide the user towards the solution without giving it away completely. Keep the hint concise (max 2-3 sentences)."
 
-        openai.api_key = os.getenv("OPENAI_API_KEY")
-        response = openai.chat.completions.create(
-            model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt}]
+        client = groq.Groq(api_key=os.getenv("GROQ_API_KEY"))
+        chat_completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model="mixtral-8x7b-32768",  # or another Groq model of your choice
         )
-        hint = response.choices[0].message.content
+        hint = chat_completion.choices[0].message.content
 
         embed = discord.Embed(
             title=f"Hint for Problem #{problem_number}: {title}",
@@ -518,8 +519,7 @@ async def upcoming_contests(ctx):
 if __name__ == "__main__":
     load_dotenv()
     token = os.getenv("DISCORD_TOKEN")
-    openai.api_key = os.getenv("OPENAI_API_KEY")
     if not token:
-        print("Error: DISCORD_TOKEN or OPENAI API KEY environment variable not set")
+        print("Error: DISCORD_TOKEN environment variable not set")
         exit(1)
     bot.run(token)
