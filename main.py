@@ -427,8 +427,17 @@ async def user_stats(ctx, username: str):
             embed.add_field(name="Website", value=profile["websites"][0], inline=True)
 
         embed.add_field(name="Ranking", value=f"#{profile['ranking']}", inline=True)
+        
+        total_solved = 0
         for stat in stats:
-            if stat["difficulty"] != "All":
+            if stat["difficulty"] == "All":
+                total_solved = stat["count"]
+                embed.add_field(
+                    name="Total Problems",
+                    value=f"**{total_solved} solved**",
+                    inline=True
+                )
+            elif stat["difficulty"] in ["Easy", "Medium", "Hard"]:
                 embed.add_field(
                     name=f"{stat['difficulty']} Problems",
                     value=f"{stat['count']} solved",
