@@ -4,7 +4,7 @@ A Discord bot that provides various LeetCode functionalities, including fetching
 
 ## Bot Usage and Reach
 
-The bot is currently active and being utilized across more than 40 servers.
+The bot is currently active and being utilized across more than 100 servers.
 
 ## Features
 
