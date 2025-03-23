@@ -39,10 +39,10 @@ The bot is currently active and being utilized across more than 100 servers.
 
 3. **Environment Variables**:
    - Create a `.env` file in the root directory.
-   - Add your Discord bot token and OpenAI API key:
+   - Add your Discord bot token and GROQ API key:
      ```
      DISCORD_TOKEN=your_discord_token
-     OPENAI_API_KEY=your_openai_api_key
+     GROQ_API_KEY=your_GROQ_api_key
      ```
 
 4. **Run the bot**:
@@ -55,6 +55,6 @@ The bot is currently active and being utilized across more than 100 servers.
 - Python 3.8+
 - Discord.py
 - Requests
-- OpenAI API
+- GROQ API
 - dotenv
 
