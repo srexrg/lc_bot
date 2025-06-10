@@ -230,7 +230,7 @@ async def get_hint(ctx, problem_number: str):
         client = groq.Groq(api_key=os.getenv("GROQ_API_KEY"))
         chat_completion = client.chat.completions.create(
             messages=[{"role": "user", "content": prompt}],
-            model="mixtral-8x7b-32768",  # or another Groq model of your choice
+            model="mistral-saba-24b", 
         )
         hint = chat_completion.choices[0].message.content
 
