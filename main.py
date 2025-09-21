@@ -5,12 +5,21 @@ import groq
 import logging
 import random
 import os
+import re
 from dotenv import load_dotenv
 from discord.ext.commands import cooldown, BucketType
 from collections import defaultdict
 from datetime import datetime, timedelta,timezone
 
 logging.basicConfig(level=logging.INFO)
+
+def clean_ai_response(text):
+    """Remove <think> tags and their content from AI responses"""
+    # Remove <think>...</think> blocks (including multiline)
+    cleaned = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL)
+    # Clean up any extra whitespace
+    cleaned = re.sub(r'\n\s*\n', '\n', cleaned.strip())
+    return cleaned
 
 class RateLimiter:
     def __init__(self, max_requests, time_window):
@@ -230,9 +239,11 @@ async def get_hint(ctx, problem_number: str):
         client = groq.Groq(api_key=os.getenv("GROQ_API_KEY"))
         chat_completion = client.chat.completions.create(
             messages=[{"role": "user", "content": prompt}],
-            model="mistral-saba-24b", 
+            model="qwen/qwen3-32b", 
         )
         hint = chat_completion.choices[0].message.content
+
+        hint = clean_ai_response(hint)
 
         embed = discord.Embed(
             title=f"Hint for Problem #{problem_number}: {title}",
